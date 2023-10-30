@@ -62,5 +62,5 @@ cd /opt/bitnami/kafka
 docker exec -it {kafka-container-id} /bin/bash
 
 cd /opt/bitnami/kafka
-./bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic transformed --consumer.config /opt/bitnami/kafka/config/consumer.properties
+./bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic {topic_name} --consumer.config /opt/bitnami/kafka/config/consumer.properties
 ```
