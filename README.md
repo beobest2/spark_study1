@@ -1,10 +1,3 @@
-# spark_lecture
-
-```
-$ docker run -it --rm -p 8888:8888 -v "$(pwd)":/home/jovyan/work jupyter/pyspark-notebook
-
-```
-
 # Docker Compose를 사용한 Spark, Kafka, Cassandra 설치
 
 ```
@@ -20,7 +13,7 @@ docker exec -it {pyspark-spark-1-id} /bin/bash
 ./sbin/start-history-server.sh
 ```
 
-### spark submit
+### Spark submit
 
 - docker 내부에서
 
@@ -31,19 +24,19 @@ spark-submit --master spark://spark:7077 <python_file_location>
 spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1 --master spark://spark:7077 spark_kafka.py
 ```
 
-### spark master
+### Spark master
 
 - 0.0.0.0:8080
 - 0.0.0.0:18080 (history server)
 - Running Application > Application Detail UI > 0.0.0.0:4040 으로 수정
 
-###  spark worker scale up
+### Spark worker scale up
 
 ```
 docker compose up --scale spark-worker=2 -d
 ```
 
-### kafka create topic
+### Kafka create topic
 
 ```
 
@@ -54,11 +47,20 @@ cd /opt/bitnami/kafka
 
 ```
 
-### kafka produce
+### Kafka produce
 
 ```
 docker exec -it {kafka-container-id} /bin/bash
 
 cd /opt/bitnami/kafka
 ./bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic {topic_name} --producer.config /opt/bitnami/kafka/config/producer.properties
+```
+
+### Kafka consume
+
+```
+docker exec -it {kafka-container-id} /bin/bash
+
+cd /opt/bitnami/kafka
+./bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic transformed --consumer.config /opt/bitnami/kafka/config/consumer.properties
 ```
