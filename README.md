@@ -64,3 +64,28 @@ docker exec -it {kafka-container-id} /bin/bash
 cd /opt/bitnami/kafka
 ./bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic {topic_name} --consumer.config /opt/bitnami/kafka/config/consumer.properties
 ```
+
+### Kafka etc
+
+```
+./bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
+./bin/kafka-topics.sh --bootstrap-server kafka:9092 --delete --topic {topic_name}
+```
+
+### Cassandra test
+
+
+```
+cqlsh -u cassandra -p cassandra
+CREATE KEYSPACE test_db WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+use test_db;
+CREATE TABLE users (login_id text PRIMARY KEY, user_name text, last_login timestamp);
+INSERT INTO users (login_id, user_name, last_login) VALUES ('100', 'Kim', '2023-09-01 00:00:00');
+INSERT INTO users (login_id, user_name, last_login) VALUES ('101', 'Lee', '2023-09-01 01:00:00');
+INSERT INTO users (login_id, user_name, last_login) VALUES ('102', 'Park', '2023-09-01 02:00:00');
+select * from users;
+```
+
+```
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1,com.datastax.spark:spark-cassandra-connector_2.12:3.4.1 --master spark://spark:7077 spark_kafka_static_join.py
+```
