@@ -20,7 +20,7 @@ docker exec -it {pyspark-spark-1-id} /bin/bash
 ./sbin/start-history-server.sh
 ```
 
-spark submit
+### spark submit
 
 - docker 내부에서
 
@@ -31,33 +31,34 @@ spark-submit --master spark://spark:7077 <python_file_location>
 spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1 --master spark://spark:7077 spark_kafka.py
 ```
 
-spark master
+### spark master
 
 - 0.0.0.0:8080
 - 0.0.0.0:18080 (history server)
+- Running Application > Application Detail UI > 0.0.0.0:4040 으로 수정
 
-spark worker scale up
+###  spark worker scale up
 
 ```
 docker compose up --scale spark-worker=2 -d
 ```
 
-kafka create topic
+### kafka create topic
 
 ```
 
 docker exec -it {kafka-container-id} /bin/bash
 
-cd /opt/bitnami/kafka/bin
-bin/kafka-topics.sh --create --topic {topic_name} --bootstrap-server kafka:9092
+cd /opt/bitnami/kafka
+./bin/kafka-topics.sh --create --topic {topic_name} --bootstrap-server kafka:9092
 
 ```
 
-kafka produce
+### kafka produce
 
 ```
 docker exec -it {kafka-container-id} /bin/bash
 
-cd /opt/bitnami/kafka/bin
-bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic {topic_name} --producer.config /opt/bitnami/kafka/config/producer.properties
+cd /opt/bitnami/kafka
+./bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic {topic_name} --producer.config /opt/bitnami/kafka/config/producer.properties
 ```
