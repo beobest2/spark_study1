@@ -50,7 +50,7 @@ query = (
     window_agg_df.writeStream.format("console")
     .option("truncate", "false")
     .trigger(processingTime="5 seconds")
-    .outputMode("append")
+    .outputMode("update")
     .start()
 )
 query.awaitTermination()

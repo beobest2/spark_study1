@@ -67,10 +67,7 @@ def cassandra_writer(batch_df, batch_id):
 
 
 query = (
-    output_df.writeStream.foreachBatch(cassandra_writer)
-    .outputMode("update")
-    .trigger(processingTime="5 seconds")
-    .start()
+    output_df.writeStream.foreachBatch(cassandra_writer).outputMode("update").start()
 )
 
 query.awaitTermination()

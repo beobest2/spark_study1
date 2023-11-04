@@ -13,7 +13,7 @@ events = (
     spark.readStream.format("kafka")
     .option("kafka.bootstrap.servers", "kafka:9092")
     .option("subscribe", "quickstart")
-    .option("startingOffsets", "earliest")
+    .option("startingOffsets", "latest")
     .option("failOnDataLoss", "false")
     .load()
 )
