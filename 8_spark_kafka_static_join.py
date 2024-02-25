@@ -2,6 +2,12 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType
 from pyspark.sql.functions import from_json, col, to_timestamp
 
+"""
+Cassandra
+distributed NoSQL database
+high availability, fault tolerance, scalability
+high write and read throughput
+"""
 spark = (
     SparkSession.builder.appName("SparkStreaming")
     .config("spark.streaming.stopGracefullyOnShutdown", "true")

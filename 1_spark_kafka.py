@@ -18,7 +18,11 @@ events = (
     .load()
 )
 
+# ---
+
 events.printSchema()
+
+# ---
 
 words = events.select(explode(split(events.value, " ")).alias("word"))
 words_count = words.groupBy("word").count()

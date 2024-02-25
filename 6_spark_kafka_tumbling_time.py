@@ -2,6 +2,10 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 from pyspark.sql.functions import expr, from_json, col, lower, to_timestamp, window
 
+"""
+Tumbling time window : no overlap
+"""
+
 spark = (
     SparkSession.builder.appName("SparkStreaming")
     .config("spark.streaming.stopGracefullyOnShutdown", "true")
@@ -35,22 +39,25 @@ tf_df = value_df.select("value.*").withColumn(
 )
 
 window_duration = "5 minutes"
-
-# watermark boundary
-# max(event time) - watermark = watermark boundary
-# if the event comes after the watermark boundary, it will be ignored
 window_agg_df = (
-    tf_df.withWatermark("create_date", "10 minutes")
-    .groupBy(window(col("create_date"), window_duration))
+    tf_df.groupBy(window(col("create_date"), window_duration))
     .sum("amount")
     .withColumnRenamed("sum(amount)", "total_amount")
 )
+"""
+sliding_duration = "2 minutes"
+window_agg_df = (
+    tf_df.groupBy(window(col("create_date"), window_duration, sliding_duration))
+    .sum("amount")
+    .withColumnRenamed("sum(amount)", "total_amount")
+)
+"""
 
 query = (
     window_agg_df.writeStream.format("console")
     .option("truncate", "false")
     .trigger(processingTime="5 seconds")
-    .outputMode("update")
+    .outputMode("complete")
     .start()
 )
 query.awaitTermination()

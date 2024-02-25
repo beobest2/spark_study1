@@ -2,6 +2,11 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 from pyspark.sql.functions import expr, from_json, col, lower
 
+"""
+Stateless : operations on individual data elements independently
+Stateful : maintaining and updating some form of state or context as data is processed (state store)
+"""
+
 spark = (
     SparkSession.builder.appName("SparkStreamingKafkaJsonStream")
     .config("spark.streaming.stopGracefullyOnShutdown", "true")

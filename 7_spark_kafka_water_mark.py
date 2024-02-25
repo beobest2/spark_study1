@@ -35,8 +35,13 @@ tf_df = value_df.select("value.*").withColumn(
 )
 
 window_duration = "5 minutes"
+
+# watermark boundary
+# max(event time) - watermark = watermark boundary
+# if the event comes after the watermark boundary, it will be ignored
 window_agg_df = (
-    tf_df.groupBy(window(col("create_date"), window_duration))
+    tf_df.withWatermark("create_date", "10 minutes")
+    .groupBy(window(col("create_date"), window_duration))
     .sum("amount")
     .withColumnRenamed("sum(amount)", "total_amount")
 )
@@ -45,7 +50,7 @@ query = (
     window_agg_df.writeStream.format("console")
     .option("truncate", "false")
     .trigger(processingTime="5 seconds")
-    .outputMode("complete")
+    .outputMode("append")
     .start()
 )
 query.awaitTermination()
