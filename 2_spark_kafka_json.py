@@ -31,6 +31,7 @@ value_df = events.select(
 )
 value_df.show(truncate=False)
 
+# simple transform
 tf_df = value_df.selectExpr(
     "value.city",
     "value.domain",
@@ -46,7 +47,7 @@ concat_df = (
 
 concat_df.show(truncate=False)
 
-output_df = concat_df.selectExpr(
+output_df = concat_df.selectExpr( # key, value
     "null",
     """
     to_json(

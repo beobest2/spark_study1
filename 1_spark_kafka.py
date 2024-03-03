@@ -20,7 +20,7 @@ events = (
 
 # ---
 
-events.printSchema()
+# events.printSchema()
 
 # ---
 

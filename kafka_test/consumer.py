@@ -3,9 +3,9 @@ import json
 
 consumer = KafkaConsumer(
     'test',
-    bootstrap_servers=['localhost:9094'],
-    group_id='group1',
-    auto_offset_reset='earliest',
+    bootstrap_servers=['kafka:9092'],
+    group_id='group6',
+    auto_offset_reset='latest',
     value_deserializer=lambda m: json.loads(m.decode('utf-8')) 
 )
 
